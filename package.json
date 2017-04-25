@@ -1,0 +1,9 @@
+{
+  "name": "super-loader",
+  "version": "0.1.0",
+  "description": "load stl, obj, fbx and so on",
+  "main": "index.js",
+  "repository": "https://github.com/royJang/super-loader.git",
+  "author": "royjang <zzl11081@gmai.com>",
+  "license": "BSD 2-Clause License"
+}
