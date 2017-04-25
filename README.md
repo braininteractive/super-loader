@@ -1,10 +1,6 @@
 # super-loader
 load stl、fbx、obj ...
 
-### support WebWorker
-
-### support model Dimensionality reduction
-
 ### Example
 ```
     var loader = require('super-loader');
@@ -18,7 +14,6 @@ load stl、fbx、obj ...
     var mesh = loader( 'http://royjang.github.io/super-loader/example.stl', /* options */ );
     // 2.
     var mesh = loader( 'http://royjang.github.io/super-loader/503d123bea9fcc8064a60e8e4572ac90', /* options */ );
-
 ```
 
 ### Options
@@ -40,10 +35,10 @@ Reduce the number of vertexes in reading files
 ```
 
 #### worker
-use the webwork to load model
+load the model using webworker
 ```
     var mesh = loader( File, {
-        worker: false // if browser support webworker, default is true
+        worker: false // if the browser supports webworker, default is true
     });
 ``` 
 
