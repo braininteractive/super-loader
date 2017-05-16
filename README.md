@@ -1,19 +1,36 @@
 # super-loader
-load stl、fbx、obj ...
+load stl、fbx、obj and so on...
 
 ### Example
 ```
     var loader = require('super-loader');
     // local
     // 1.
-    var mesh = loader( event.target.files, /* options */ );
+    loader( event.target.files[ 0 ], /* options */ );
     // 2.
-    var mesh = loader( File, /* options */ );
+    loader( File, /* options */ );
+    // 3.
+    loader( event.target.files, /* options */ );
+    // 4.
+    loader( [ File, File, File ], /* options */ );
+```
+
+```
     // remote
     // 1.
-    var mesh = loader( 'http://royjang.github.io/super-loader/example.stl', /* options */ );
+    loader( 'http://royjang.github.io/super-loader/example.stl', /* options */ );
     // 2.
-    var mesh = loader( 'http://royjang.github.io/super-loader/503d123bea9fcc8064a60e8e4572ac90', /* options */ );
+    loader( 'http://royjang.github.io/super-loader/503d123bea9fcc8064a60e8e4572ac90', /* options */ );
+```
+
+```
+    loader( 'http://royjang.github.io/super-loader/example.stl' )
+        .then( mesh => {
+            //the mesh
+        })
+        .catch( e => {
+            // some error
+        });
 ```
 
 ### Options
@@ -21,7 +38,7 @@ load stl、fbx、obj ...
 #### type
 ```
     // if the URL not has been file extension, should be set type
-    var mesh = loader( 'http://royjang.github.io/super-loader/503d123bea9fcc8064a60e8e4572ac90', {
+    loader( 'http://royjang.github.io/super-loader/503d123bea9fcc8064a60e8e4572ac90', {
         type: 'stl' // no default
     });
 ``` 
@@ -29,23 +46,23 @@ load stl、fbx、obj ...
 #### reduction
 Reduce the number of vertexes in reading files
 ```
-    var mesh = loader( File, {
-        reduction: 1 // default is 1
-    });
+    reduction: 2 // default is 2
 ```
 
 #### worker
 load the model using webworker
 ```
-    var mesh = loader( File, {
-        worker: false // if the browser supports webworker, default is true
-    });
+    worker: false // if the browser supports webworker, default is true
 ``` 
 
-#### max
+#### max-thread
 The maximum number of threads that webwork can use
 ```
-    var mesh = loader( File, {
-        max: 4 // default is 4
-    });
+    maxThread: 4 // default is 4
 ``` 
+
+#### max-size
+The maximum number of file size, the default unit is byte
+```
+    maxSize: 1000 // no default
+```

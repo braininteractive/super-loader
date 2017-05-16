@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+    <title> Example: load-stl </title>
+</head>
+<body>  
+
+<input type="file" id="inputFile" />
+
+<script src="./statics/three.js"></script>
+<script src="//127.0.0.1:3000/super-loader.js"></script>    
+<script>
+
+    var scene, camera, renderer;
+    var material, mesh, light;
+
+    init();
+    animate();
+
+    function init() {
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera( 75, 800 / 600, 1, 10000 );
+        camera.position.z = 1000;
+        material = new THREE.MeshPhongMaterial({ color: 0x666666 });
+        renderer = new THREE.WebGLRenderer({
+            antialias: true
+        });
+        light = new THREE.DirectionalLight( 0xffffff, 2 );
+        scene.add( light );
+        renderer.setSize( 800, 600 );
+        renderer.setClearColor( 0xf9f9f9 );
+        document.body.appendChild( renderer.domElement );
+    }
+
+    function animate() {
+        requestAnimationFrame( animate );
+        if( mesh ) mesh.rotation.x += 0.01;
+        if( mesh ) mesh.rotation.y += 0.02;
+        renderer.render( scene, camera );
+    }
+    
+    document.getElementById('inputFile').addEventListener('change', upload);
+
+    function upload ( event ){
+        Array.from( event.target.files ).forEach( file => {
+            console.time('super-loader');
+            superLoader( file, {
+                reduction: 10
+            }).then( _mesh => {
+                console.timeEnd('super-loader');    
+                mesh = _mesh;   
+                mesh.material = material;
+                console.log(modelCalc( mesh ));
+                scene.add( mesh );
+            });     
+        });
+    }
+</script>
+</body>
+</html>
