@@ -32,18 +32,20 @@ module.exports = ( file, extension, isDisk, workerEnable, reduction, noColor ) =
                     noColor: noColor,
                     initial ( geometry ){
                         theMesh = LOADER( geometry );
-                        PubSub.emit('initial', theMesh);
+                        PubSub.emit('initial', theMesh);        
                     },
                     update ( geometry ){
                         var _geometry = (new THREE.Geometry()).fromBufferGeometry( geometry );
                         theMesh.geometry.merge( _geometry );
                         theMesh.geometry.computeFaceNormals();
                         theMesh.updateMatrix();
-                        PubSub.emit('update', theMesh );
+                        theMesh.drawMode = THREE.TrianglesDrawMode;
+                        PubSub.emit('update', theMesh );    
                     },  
-                    finish ( geometry ){
-                        PubSub.emit('finish', theMesh);
-                    }
+                    finish ( len ){
+                        theMesh.drawMode = THREE.TrianglesDrawMode; 
+                        PubSub.emit('finish', theMesh);      
+                    }       
                 });             
             }); 
         } catch ( e ){

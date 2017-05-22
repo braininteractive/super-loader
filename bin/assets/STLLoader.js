@@ -85,6 +85,8 @@ STLLoader.prototype = {
 		var step1_end = ary[ 0 ][ 1 ];
 		var rGeo = generatorGeometry( step1_start, step1_end );
 		opts.initial( rGeo );	
+		//the first item is loaded	
+		ary = ary.slice( 1 );	
 
 		// loop, skip the first
 		// update the Geometry
@@ -105,7 +107,10 @@ STLLoader.prototype = {
 			// clearTimeout( timer );	
 			timer = setTimeout(() => {
 				len -= 1;		
-				if( len < 0 ) return clearTimeout( timer );
+				if( len < 0 ){
+					opts.finish( len );
+					return clearTimeout( timer );
+				}
 				ary[ len ]();
 				execFunc();
 			}, 1000 );		

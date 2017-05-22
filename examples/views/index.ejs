@@ -29,11 +29,11 @@
         renderer = new THREE.WebGLRenderer({
             antialias: true
         });
-        var light = new THREE.AmbientLight( 0xffffff, 1 );
-        scene.add( light );
+        // var light = new THREE.AmbientLight( 0xffffff, 1 );
+        // scene.add( light );
 
         var dirLight = new THREE.DirectionalLight( 0xffffff, 2);
-        scene.add( light );
+        scene.add( dirLight );
 
         renderer.setSize( 800, 600 );
         renderer.setClearColor( 0xf9f9f9 );
@@ -94,8 +94,9 @@
 
         function generatorTestCase ( file, reduction ){
             return new Promise(( resolve, reject ) => {
+                
                 var t = superLoader( file, {
-                    "reduction": 1,
+                    "reduction": 5,
                     "noColor": true
                 });
 
@@ -107,9 +108,10 @@
                 }); 
 
                 t.on('update', function ( event, _mesh ){
+                    // console.log('update');
+                    // mesh = _mesh;
+                    // scene.add( _mesh );  
                     console.log('update');
-                    mesh = _mesh;
-                    scene.add( _mesh );
                 }); 
 
                 // t.on('progress', function (){
