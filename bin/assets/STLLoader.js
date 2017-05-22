@@ -1,8 +1,4 @@
 /**
- * @author aleeper / http://adamleeper.com/
- * @author mrdoob / http://mrdoob.com/
- * @author gero3 / https://github.com/gero3
- * @author Mugen87 / https://github.com/Mugen87
  * @author royJang / https://github.com/royJang
  *
  * Description: A THREE loader for STL ASCII files, as created by Solidworks and other CAD programs.
@@ -10,25 +6,9 @@
  * Supports both binary and ASCII encoded files, with automatic detection of type.
  *
  * The loader returns a non-indexed buffer geometry.
- *
- * Limitations:
- *  Binary decoding supports "Magics" color format (http://en.wikipedia.org/wiki/STL_(file_format)#Color_in_binary_STL).
- *  There is perhaps some question as to how valid it is to always assume little-endian-ness.
- *  ASCII decoding assumes file is UTF-8.
- *
- * Usage:
- *  var loader = new THREE.STLLoader();
- *  loader.load( './models/stl/slotted_disk.stl', function ( geometry ) {
- *    scene.add( new THREE.Mesh( geometry ) );
- *  });
- *
- * For binary STLs geometry might contain colors for vertices. To use it:
- *  // use the same code to load STL as above
- *  if (geometry.hasColors) {
- *    material = new THREE.MeshPhongMaterial({ opacity: geometry.alpha, vertexColors: THREE.VertexColors });
- *  } else { .... }
- *  var mesh = new THREE.Mesh( geometry, material );
  */
+
+import { splitArray } from '../util';
 
 
 function STLLoader ( manager ) {
@@ -37,21 +17,14 @@ function STLLoader ( manager ) {
 };
 
 STLLoader.prototype = {
-
 	constructor: THREE.STLLoader,
-
 	load: function ( url, onLoad, onProgress, onError ) {
-
 		var scope = this;
-
 		var loader = new THREE.FileLoader( scope.manager );
 		loader.setResponseType( 'arraybuffer' );
 		loader.load( url, function ( text ) {
-
 			onLoad( scope.parse( text ) );
-
 		}, onProgress, onError );
-
 	},
 
 	parse: function ( data, opts = {} ) {
@@ -65,9 +38,7 @@ STLLoader.prototype = {
 			expect = 80 + ( 32 / 8 ) + ( n_faces * face_size );
 
 			if ( expect === reader.byteLength ) {
-
 				return true;
-
 			}
 
 			// An ASCII STL data must begin with 'solid ' as the first six bytes.
@@ -78,17 +49,12 @@ STLLoader.prototype = {
 			var solid = [ 115, 111, 108, 105, 100 ];
 
 			for ( var i = 0; i < 5; i ++ ) {
-
 				// If solid[ i ] does not match the i-th byte, then it is not an
 				// ASCII STL; hence, it is binary and return true.
-
 				if ( solid[ i ] != reader.getUint8( i, false ) ) return true;
-
  			}
-
 			// First 5 bytes read "solid"; declare it to be an ASCII STL
 			return false;
-
 		};
 
 		var binData = this.ensureBinary( data );
@@ -104,102 +70,165 @@ STLLoader.prototype = {
 	parseBinary: function ( data, opts ) {
 	
 		var reader = new DataView( data );
-		var faces = reader.getUint32( 80, true );
+		var $faces = reader.getUint32( 80, true );	
 
 		var r, g, b, hasColors = false, colors;
 		var defaultR, defaultG, defaultB, alpha;
 
+		// var normals = new Float32Array( $faces * 3 * 3 );
+		// var positions = new Float32Array( $faces * 3 * 3 );		
+
 		// process STL header
 		// check for default color in header ("COLOR=rgba" sequence).
+		var ary = splitArray( $faces, opts.reduction );
+		var step1_start = ary[ 0 ][ 0 ];
+		var step1_end = ary[ 0 ][ 1 ];
+		var rGeo = generatorGeometry( step1_start, step1_end );
+		opts.initial( rGeo );	
 
-		for ( var index = 0; index < 80 - 10; index += opts.reduction ) {
+		// loop, skip the first
+		// update the Geometry
+		// setTimeout(() => {
+		ary = ary.map( item => {
+			return function (){
+				var start = item[ 0 ], 
+					end = item[ 1 ];
+				opts.update(generatorGeometry( start, end ), start /* offset */);
+			};
+		});
+		var timer = null;
+		var len = ary.length;
 
-			if ( ( reader.getUint32( index, false ) == 0x434F4C4F /*COLO*/ ) &&
-				( reader.getUint8( index + 4 ) == 0x52 /*'R'*/ ) &&
-				( reader.getUint8( index + 5 ) == 0x3D /*'='*/ ) ) {
+		execFunc();	
 
-				hasColors = true;
-				colors = [];
-
-				defaultR = reader.getUint8( index + 6 ) / 255;
-				defaultG = reader.getUint8( index + 7 ) / 255;
-				defaultB = reader.getUint8( index + 8 ) / 255;
-				alpha = reader.getUint8( index + 9 ) / 255;
-
-			}
-
+		function execFunc (){
+			// clearTimeout( timer );	
+			timer = setTimeout(() => {
+				len -= 1;		
+				if( len < 0 ) return clearTimeout( timer );
+				ary[ len ]();
+				execFunc();
+			}, 1000 );		
+		}	
+		
+		function generatorGeometry ( start, end ){
+			var geometry = parseData( start, end );	
+			var geo = new THREE.BufferGeometry();
+			geo.addAttribute('normal', new THREE.BufferAttribute(geometry.attributes.normal.array, 3));
+			geo.addAttribute('position', new THREE.BufferAttribute(geometry.attributes.position.array, 3));
+			return geo;
 		}
 
-		var dataOffset = 84;
-		var faceLength = 12 * 4 + 2;
+		// for( var i = 0, len = ary.length; i < len; i++ ){
+		// 	var start = ary[ i ][ 0 ], 
+		// 		end = ary[ i ][ 1 ];	
 
-		var geometry = new THREE.BufferGeometry();
+		// 	var geometry = parseData( start, end );	
+		// 	if( rGeo.attributes.normal && rGeo.attributes.position ){
+		// 		console.log('then');
+		// 		break;
+		// 	} else {
+		// 		console.log('first');
+		// 		rGeo.addAttribute('normal', new THREE.BufferAttribute(geometry.attributes.normal.array, 3));
+		// 		rGeo.addAttribute('position', new THREE.BufferAttribute(geometry.attributes.position.array, 3));
+		// 		opts.callback( rGeo );
+		// 		break;
+		// 	}
+		// }
 
-		var vertices = [];
-		var normals = [];
+		// ary.forEach(( item, index ) => {
+		// 	var start = item[ 0 ], 
+		// 		end = item[ 1 ];
 
-		for ( var face = 0; face < faces; face += opts.reduction ) {
+		// 	var geometry = parseData( start, end );
+		// 	if( rGeo.attributes.normal && rGeo.attributes.position ){
+		// 		console.log('then');
+		// 	} else {
+		// 		console.log('first');
+		// 		rGeo.addAttribute('normal', new THREE.BufferAttribute(geometry.attributes.normal.array, 3));
+		// 		rGeo.addAttribute('position', new THREE.BufferAttribute(geometry.attributes.position.array, 3));
+		// 		opts.callback( rGeo );
+		// 	}
+		// 	// normals.set( geometry.attributes.normal.array, start * 3 * 3 );
+		// 	// positions.set( geometry.attributes.position.array, start * 3 * 3 );
+		// 	// geometry = null;
+		// });	
+		// rGeo.addAttribute('normal', new THREE.BufferAttribute(normals, 3));
+		// rGeo.addAttribute('position', new THREE.BufferAttribute(positions, 3));
 
-			var start = dataOffset + face * faceLength;
-			var normalX = reader.getFloat32( start, true );
-			var normalY = reader.getFloat32( start + 4, true );
-			var normalZ = reader.getFloat32( start + 8, true );
+		// normals = null;
+		// positions = null;	
 
+		// return rGeo;
+
+		function parseData ( $start, $end ){
+
+			for ( var index = 0; index < 80 - 10; index ++ ) {
+				if ( ( reader.getUint32( index, false ) == 0x434F4C4F /*COLO*/ ) &&
+					( reader.getUint8( index + 4 ) == 0x52 /*'R'*/ ) &&
+					( reader.getUint8( index + 5 ) == 0x3D /*'='*/ ) ) {
+
+					hasColors = true;
+					colors = [];	
+
+					defaultR = reader.getUint8( index + 6 ) / 255;
+					defaultG = reader.getUint8( index + 7 ) / 255;
+					defaultB = reader.getUint8( index + 8 ) / 255;
+					alpha = reader.getUint8( index + 9 ) / 255;
+				}
+			}
+
+			//The noColor default is false
+			if( opts.noColor === true ){
+				hasColors = false;
+			}	
+
+			var dataOffset = 84;
+			var faceLength = 12 * 4 + 2;
+
+			var geometry = new THREE.BufferGeometry();
+
+			var vertices = [];
+			var normals = [];
+
+			for ( var face = $start; face < $end; face ++ ) {
+				var start = dataOffset + face * faceLength;
+				var normalX = reader.getFloat32( start, true );
+				var normalY = reader.getFloat32( start + 4, true );
+				var normalZ = reader.getFloat32( start + 8, true );
+				if ( hasColors ) {	
+					var packedColor = reader.getUint16( start + 48, true );
+					if ( ( packedColor & 0x8000 ) === 0 ) {
+						// facet has its own unique color
+						r = ( packedColor & 0x1F ) / 31;
+						g = ( ( packedColor >> 5 ) & 0x1F ) / 31;
+						b = ( ( packedColor >> 10 ) & 0x1F ) / 31;
+					} else {
+						r = defaultR;
+						g = defaultG;
+						b = defaultB;
+					}
+				}
+				for ( var i = 1; i <= 3; i ++ ) {
+					var vertexstart = start + i * 12;
+					vertices.push( reader.getFloat32( vertexstart, true ) );
+					vertices.push( reader.getFloat32( vertexstart + 4, true ) );
+					vertices.push( reader.getFloat32( vertexstart + 8, true ) );
+					normals.push( normalX, normalY, normalZ );
+					if ( hasColors ) {
+						colors.push( r, g, b );
+					}
+				}
+			}
+			geometry.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( vertices ), 3 ) );
+			geometry.addAttribute( 'normal', new THREE.BufferAttribute( new Float32Array( normals ), 3 ) );
 			if ( hasColors ) {
-
-				var packedColor = reader.getUint16( start + 48, true );
-
-				if ( ( packedColor & 0x8000 ) === 0 ) {
-
-					// facet has its own unique color
-
-					r = ( packedColor & 0x1F ) / 31;
-					g = ( ( packedColor >> 5 ) & 0x1F ) / 31;
-					b = ( ( packedColor >> 10 ) & 0x1F ) / 31;
-
-				} else {
-
-					r = defaultR;
-					g = defaultG;
-					b = defaultB;
-
-				}
-
-			}
-
-			for ( var i = 1; i <= 3; i ++ ) {
-
-				var vertexstart = start + i * 12;
-
-				vertices.push( reader.getFloat32( vertexstart, true ) );
-				vertices.push( reader.getFloat32( vertexstart + 4, true ) );
-				vertices.push( reader.getFloat32( vertexstart + 8, true ) );
-
-				normals.push( normalX, normalY, normalZ );
-
-				if ( hasColors ) {
-
-					colors.push( r, g, b );
-
-				}
-
-			}
-
+				geometry.addAttribute( 'color', new THREE.BufferAttribute( new Float32Array( colors ), 3 ) );
+				geometry.hasColors = true;
+				geometry.alpha = alpha;
+			}	
+			return geometry;
 		}
-
-		geometry.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( vertices ), 3 ) );
-		geometry.addAttribute( 'normal', new THREE.BufferAttribute( new Float32Array( normals ), 3 ) );
-
-		if ( hasColors ) {
-
-			geometry.addAttribute( 'color', new THREE.BufferAttribute( new Float32Array( colors ), 3 ) );
-			geometry.hasColors = true;
-			geometry.alpha = alpha;
-
-		}
-
-		return geometry;
-
 	},
 
 	parseASCII: function ( data ) {

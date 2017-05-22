@@ -1,4 +1,4 @@
-module.exports = function ( mesh ){
+function calcMesh ( mesh ){
     var box = mesh.geometry.boundingBox;
     var sizes = {
         x: ( box.max.x - box.min.x ),

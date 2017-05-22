@@ -12,7 +12,7 @@ export default class Disk {
                 }   
             }, false );  
             this.reader.addEventListener( 'progress', e => {
-                console.log( e );
+                // console.log( e );
             });
         });
     }

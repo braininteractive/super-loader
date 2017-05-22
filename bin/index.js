@@ -38,7 +38,10 @@ function superLoader ( file, configure = {} ) {
         workerEnable = true;
     }   
 
-    return loader( file, extension, isDisk, workerEnable, reduction );
+    // default: super-loader parse the model's Color
+    var noColor = configure.noColor || false;       
+
+    return loader( file, extension, isDisk, workerEnable, reduction, !!noColor );
 };
 
 module.exports = superLoader;

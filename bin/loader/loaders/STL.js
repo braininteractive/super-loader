@@ -1,7 +1,6 @@
-import Loader from './';
 import { normalizeGeometry } from '../../util';
 
-module.exports = function ( geometry ){
+module.exports = geometry => {
     geometry = normalizeGeometry( geometry );
     geometry.sourceType = "STL";
     geometry.center();
