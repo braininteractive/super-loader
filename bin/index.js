@@ -39,7 +39,7 @@ function superLoader ( file, configure = {} ) {
     }   
 
     // default: super-loader parse the model's Color
-    var noColor = configure.noColor || false;       
+    var noColor = configure.noColor || true;       
 
     return loader( file, extension, isDisk, workerEnable, reduction, !!noColor );
 };

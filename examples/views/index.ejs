@@ -42,86 +42,26 @@
 
     function animate() {
         requestAnimationFrame( animate );
-        if( mesh ) mesh.rotation.x += 0.01;
+        // if( mesh ) mesh.rotation.x += 0.01;
         // if( mesh ) mesh.rotation.y += 0.01;
-        // if( mesh ) mesh.rotation.z += 0.01;
+        if( mesh ) mesh.rotation.z += 0.01;
         renderer.render( scene, camera );
     }
 
     document.getElementById('inputFile').addEventListener('change', upload);
 
-    function range( min, max, step ) {
-        var t = [];
-        for( var i = min; i < max; i += step ){
-            t.push( i );
-        }
-        return t;
-    }
-
-    var reduction = range( 1, 2, 1 );
-
     function upload ( event ){
-        Array.from( event.target.files ).forEach( file => {
-            var all = reduction.map( index => {
-                return generatorTestCase( file, index );
-            });
-            console.time( 'loader' );
-            Promise.race( all ).then(( file ) => {
-                // var endTime = new Date() - 0;
-                // console.timeEnd( 'loader' );
-                // scene.add( file.mesh );
-            //     $.get('/records', {
-            //         "reduction": 1000,
-            //         "name": file.name.slice( 0, -4 ),
-            //         "time": 0,
-            //         "size": file.size
-            //     }, function ( data ){
-            //         renderer.clear();  
-            //     }); 
-            });
+        console.log(event.target.files[ 0 ] );
+        var t = superLoader( event.target.files[ 0 ] , {
+            "noColor": true
         }); 
-
-        THREE.Object3D.prototype.clear = function(){
-            let children = this.children;
-            for(let i = children.length-1;i>=0;i--){
-                let child = children[i];
-                if( child instanceof THREE.Mesh || child instanceof THREE.Group){
-                    child.clear();
-                    this.remove( child );
-                }
-            }
-        };
-
-        function generatorTestCase ( file, reduction ){
-            return new Promise(( resolve, reject ) => {
-                
-                var t = superLoader( file, {
-                    "reduction": 5,
-                    "noColor": true
-                });
-
-                t.on('initial', ( event, _mesh ) => {
-                    console.log('initial');
-                    _mesh.material = material;
-                    scene.add( _mesh );
-                    mesh = _mesh;
-                }); 
-
-                t.on('update', function ( event, _mesh ){
-                    // console.log('update');
-                    // mesh = _mesh;
-                    // scene.add( _mesh );  
-                    console.log('update');
-                }); 
-
-                // t.on('progress', function (){
-                // });
-
-                // t.on('finish', function (){
-                // });
-            });  
-        }
+        t.on('parse.load', ( event, _mesh ) => {
+            console.log('load');
+            _mesh.material = material;
+            scene.add( _mesh );
+        }); 
     }
+
 </script>
 </body>
 </html>

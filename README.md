@@ -43,12 +43,6 @@ load stl、fbx、obj and so on...
     });
 ``` 
 
-#### reduction
-Reduce the number of vertexes in reading files
-```
-    reduction: 2 // default is 2
-```
-
 #### worker
 load the model using webworker
 ```

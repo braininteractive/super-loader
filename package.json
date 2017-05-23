@@ -7,7 +7,7 @@
     "dev": "node build/webpack.dev.js",
     "example": "anywhere 2000 .",
     "test": "npm run test:load_stl_reduction; npm run clear",
-    "test:load_stl_reduction" :"node examples/load_stl_reduction.js",
+    "test:load_stl_reduction": "node examples/load_stl_reduction.js",
     "clear": "rm -rf examples/records; ",
     "build": "webpack --progress --hide-modules --config build/webpack.build.min.js && webpack --progress --hide-modules --config  build/webpack.build.js"
   },
@@ -34,7 +34,5 @@
     "webpack-hot-middleware": "^2.18.0",
     "webpack-merge": "^4.1.0"
   },
-  "dependencies": {
-    "axios": "^0.16.1"
-  }
+  "dependencies": {}
 }

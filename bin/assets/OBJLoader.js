@@ -2,7 +2,9 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-THREE.OBJLoader = function ( manager ) {
+module.exports = OBJLoader;
+
+function OBJLoader ( manager ) {
 
 	this.manager = ( manager !== undefined ) ? manager : THREE.DefaultLoadingManager;
 
@@ -35,9 +37,9 @@ THREE.OBJLoader = function ( manager ) {
 
 };
 
-THREE.OBJLoader.prototype = {
+OBJLoader.prototype = {
 
-	constructor: THREE.OBJLoader,
+	constructor: OBJLoader,
 
 	load: function ( url, onLoad, onProgress, onError ) {
 
@@ -47,12 +49,12 @@ THREE.OBJLoader.prototype = {
 		loader.setPath( this.path );
 		loader.load( url, function ( text ) {
 
-			onLoad( scope.parse( text ) );
+			onLoad( text );
 
 		}, onProgress, onError );
 
 	},
-
+	
 	setPath: function ( value ) {
 
 		this.path = value;

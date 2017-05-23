@@ -1,3 +1,5 @@
+import ps from '../util/pubsub';
+
 export default class Disk {
     constructor ( file, extension ){
         this.reader = new FileReader(); 
@@ -8,12 +10,30 @@ export default class Disk {
                 try {
                     resolve( e.target.result );
                 } catch( e ){
-                    reject( e );
+                    reject( e );    
                 }   
             }, false );  
-            this.reader.addEventListener( 'progress', e => {
-                // console.log( e );
+            this.reader.addEventListener( 'progress', ({ loaded, total, timeStamp }) => {
+                ps.emit('upload.progress', {
+                    "loaded": loaded,
+                    "total": total,
+                    "timeStamp": timeStamp,
+                    "name": file.name
+                }); 
+            });     
+            this.reader.addEventListener( 'error', ({ message, stack }) => {
+                ps.emit('upload.error', {
+                    "name": file.name,
+                    "message": message,
+                    "stack": stack
+                });
+            });     
+            this.reader.addEventListener( 'abort',  e => {
+                console.log( 'abort' ); 
             });
+            ps.on('upload.abort', () => {
+                this.reader.abort();
+            });         
         });
     }
     load ( file ){  

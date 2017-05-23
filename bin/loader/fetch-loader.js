@@ -1,31 +1,26 @@
-export default class {
-    constructor ( file ){
-        return this.load( file );
-    }
-    load ( file ){
-        // var extension = file.type || getExtension( file.name ); 
+import ps from '../util/pubsub';    
+
+export default class {  
+    constructor ( url, loader ){
+        this.loader = loader;
+        return this.load( url );        
+    }       
+    load ( url ){
         return new Promise(( resolve, reject ) => {
-            //根据模型类型选择哪种读取方式
-            // switch( extension ){
-            //     case 'stl' : {
-            //         // deps.loadSTLLoader().then(()=> {
-            //             //优先使用remote字段
-            //             // resolve((new STLLoader()).download( file.remote || file.name, loaded => {
-            //                 // progressCb(parseInt(((loaded / file.size) * 100)));    
-            //             // }));        
-            //         // }); 
-            //         break;
-            //     }   
-            //     case 'obj' : {  
-            //         deps.loadOBJLoader().then(() => {
-            //             resolve((new OBJLoader()).download( file.remote || file.name ));
-            //         });
-            //         break;
-            //     }
-            //     case 'json': {
-            //         break;  
-            //     }           
-            // }
+            this.loader.load( url, resolve, ({ loaded, total, timeStamp }) => {
+                ps.emit('upload.progress', {
+                    "name": url,
+                    "loaded": loaded,
+                    "total": total,
+                    "timeStamp": timeStamp
+                });     
+            }, ({ message, stack }) => {
+                ps.emit('upload.error', {
+                    "name": url,
+                    "stack": stack,
+                    "message": message
+                });
+            });
         });
-    }
-}
+    }       
+}   

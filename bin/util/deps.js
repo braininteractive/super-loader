@@ -1,8 +1,15 @@
-import STLLoader from '../assets/STLLoader';
-
 function installLoader ( type, callback ){
-    callback( new STLLoader () );
-}
+    switch ( type ){
+        case 'STL': {
+            callback(new (require('../assets/STLLoader.js')));
+            break;
+        }
+        case 'OBJ': {
+            callback(new (require('../assets/OBJLoader.js')));
+            break;
+        }
+    }           
+}   
 
 module.exports = type => {
     return new Promise(( resolve, reject ) => {
