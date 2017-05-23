@@ -1,7 +1,7 @@
 import ps from '../util/pubsub';    
 
 export default class {  
-    constructor ( url, loader ){
+    constructor ( url, extension, loader ){
         this.loader = loader;
         return this.load( url );        
     }       

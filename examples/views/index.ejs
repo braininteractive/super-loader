@@ -42,8 +42,6 @@
 
     function animate() {
         requestAnimationFrame( animate );
-        // if( mesh ) mesh.rotation.x += 0.01;
-        // if( mesh ) mesh.rotation.y += 0.01;
         if( mesh ) mesh.rotation.z += 0.01;
         renderer.render( scene, camera );
     }
@@ -60,7 +58,22 @@
             _mesh.material = material;
             scene.add( _mesh );
         }); 
+        t.on('parse.error', ( event, message ) => {
+            console.log( message );
+        });
     }
+
+
+    var t = superLoader( '/model/glove_R_pt04.stl' ); 
+
+    t.on('parse.load', ( event, mesh ) => {
+        scene.add( mesh );
+    }); 
+
+    t.on('parse.error', ( event, message ) => {
+        console.log( message );
+    });
+
 
 </script>
 </body>
