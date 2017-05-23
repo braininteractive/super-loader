@@ -1,7 +1,7 @@
 {
   "name": "super-loader",
   "version": "0.1.0",
-  "description": "load stl, obj, fbx and so on",
+  "description": "The model loader for the three.js",
   "main": "index.js",
   "scripts": {
     "dev": "node build/webpack.dev.js",
