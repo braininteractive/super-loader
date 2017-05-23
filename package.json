@@ -1,8 +1,8 @@
 {
   "name": "super-loader",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "The model loader for the three.js",
-  "main": "index.js",
+  "main": "./dist/super-loader.min.js",
   "scripts": {
     "dev": "node build/webpack.dev.js",
     "example": "anywhere 2000 .",
@@ -13,7 +13,7 @@
   },
   "repository": "https://github.com/royJang/super-loader.git",
   "author": "royjang <zzl11081@gmai.com>",
-  "license": "BSD 2-Clause License",
+  "license": "MIT License",
   "devDependencies": {
     "babel-core": "^6.24.1",
     "babel-loader": "^7.0.0",
@@ -34,5 +34,8 @@
     "webpack-hot-middleware": "^2.18.0",
     "webpack-merge": "^4.1.0"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  }
 }
