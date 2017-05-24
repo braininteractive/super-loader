@@ -50,6 +50,7 @@ export default class Disk {
                 break;      
             }
             case 'OBJ' : 
+            case 'FBX' :
             case 'JSON': {
                 this.reader.readAsText( file );
                 break;
@@ -59,4 +60,4 @@ export default class Disk {
             }       
         }
     }
-}
+}   

@@ -5,7 +5,7 @@
 [![Dev Dependencies][devDependencies-badge]][devDependencies-badge-url]
 
 - The model loader for the three.js     
-- Currently Support `STL`, `OBJ`, `FBX` &`JSON`      
+- Currently Support `STL`, `OBJ`  
 
 ### Install
 - Npm     
@@ -23,6 +23,9 @@ var loader = require('super-loader');
 var load = loader('assets/models/example.stl');
 load.on('parse.load', function ( event, mesh ){
 	//scene.add( mesh );
+});
+load.on('parse.error', function ( event, stack ){
+	//console.log( stack );
 });
 ```
 

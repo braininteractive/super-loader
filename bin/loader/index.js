@@ -7,12 +7,12 @@ import PubSub from '../util/pubsub';
 module.exports = ( file, extension, isDisk, workerEnable, noColor ) => {
     // The remote file is first read to the local, and then loaded according to the local file
     const FileReader = isDisk ? Disk : Fetch;
-    const covert2Mesh = require(`./loaders/${extension}`); 
+    const covert2Mesh = require(`../plugins/${extension}`);     
 
     deps( extension ).then( loader => {
         const fileReader = new FileReader( file, extension, loader );
-        fileReader.then( content => {     
-            PubSub.emit( 'upload.finish', content );
+        fileReader.then( content => {   
+            PubSub.emit( 'upload.finish', content );    
             try {       
                 var geometry = loader.parse( content, {    
                     "noColor": noColor  

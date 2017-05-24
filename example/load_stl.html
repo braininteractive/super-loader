@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example: load - stl</title>
+        <link href="/stylesheet/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <script src="/javascripts/three.js"></script>
+        <script src="/javascripts/loaders/STLLoader.js"></script>
+        <script src="http://localhost:4000/super-loader.js"></script>
+        <script src="/javascripts/editor.js"></script>
+        <script>
+
+            var t = superLoader('/model/glove_R_pt04.stl');     
+
+            t.on('parse.load', ( event, mesh ) => {
+                mesh.material = material;
+                scene.add( mesh );
+            }); 
+
+            t.on('parse.error', ( event, message ) => {
+                // console.log( message );
+            });
+
+            t.on('compatible.error', ( event, message ) => {
+                // console.log( message );
+            });
+        </script>
+    </body>
+</html>

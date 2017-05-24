@@ -1,4 +1,4 @@
-import { normalizeGeometry } from '../../util';
+import { normalizeGeometry } from '../util';
 
 module.exports = geometry => {
     geometry = normalizeGeometry( geometry );

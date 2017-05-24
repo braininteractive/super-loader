@@ -2,9 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-module.exports = OBJLoader;
-
-function OBJLoader ( manager ) {
+THREE.OBJLoader = function ( manager ) {
 
 	this.manager = ( manager !== undefined ) ? manager : THREE.DefaultLoadingManager;
 
@@ -12,11 +10,11 @@ function OBJLoader ( manager ) {
 
 	this.regexp = {
 		// v float float float
-		vertex_pattern           : /^v\s+([\d|\.|\+|\-|e|E]+)\s+([\d|\.|\+|\-|e|E]+)\s+([\d|\.|\+|\-|e|E]+)/,
+		vertex_pattern           : /^v\s+([\d\.\+\-eE]+)\s+([\d\.\+\-eE]+)\s+([\d\.\+\-eE]+)/,
 		// vn float float float
-		normal_pattern           : /^vn\s+([\d|\.|\+|\-|e|E]+)\s+([\d|\.|\+|\-|e|E]+)\s+([\d|\.|\+|\-|e|E]+)/,
+		normal_pattern           : /^vn\s+([\d\.\+\-eE]+)\s+([\d\.\+\-eE]+)\s+([\d\.\+\-eE]+)/,
 		// vt float float
-		uv_pattern               : /^vt\s+([\d|\.|\+|\-|e|E]+)\s+([\d|\.|\+|\-|e|E]+)/,
+		uv_pattern               : /^vt\s+([\d\.\+\-eE]+)\s+([\d\.\+\-eE]+)/,
 		// f vertex vertex vertex
 		face_vertex              : /^f\s+(-?\d+)\s+(-?\d+)\s+(-?\d+)(?:\s+(-?\d+))?/,
 		// f vertex/uv vertex/uv vertex/uv
@@ -37,9 +35,9 @@ function OBJLoader ( manager ) {
 
 };
 
-OBJLoader.prototype = {
+THREE.OBJLoader.prototype = {
 
-	constructor: OBJLoader,
+	constructor: THREE.OBJLoader,
 
 	load: function ( url, onLoad, onProgress, onError ) {
 
@@ -54,7 +52,7 @@ OBJLoader.prototype = {
 		}, onProgress, onError );
 
 	},
-	
+
 	setPath: function ( value ) {
 
 		this.path = value;
