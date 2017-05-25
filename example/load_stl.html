@@ -11,20 +11,23 @@
         <script src="/javascripts/editor.js"></script>
         <script>
 
-            var t = superLoader('/model/aircraft.stl');     
+            var t = superLoader('/model/aircraft.stl');   
 
             t.on('parse.load', ( event, mesh ) => {
+                mesh.geometry.center();
                 mesh.material = material;
+                mesh.rotation.x = Math.PI / 180 * -90;
+                mesh.scale.set( 0.009, 0.009, 0.009 );
                 scene.add( mesh );
             }); 
 
             t.on('parse.error', ( event, message ) => {
-                // console.log( message );
+                console.log( message );
             });
 
             t.on('compatible.error', ( event, message ) => {
-                // console.log( message );
+                console.log( message );
             });
         </script>
     </body>
-</html>
+</html> 
