@@ -5,10 +5,11 @@
         <link href="/stylesheet/bootstrap.min.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
-        <script src="/javascripts/three.js"></script>
-        <script src="/javascripts/loaders/STLLoader.js"></script>
-        <script src="/javascripts/super-loader.min.js"></script>
-        <script src="/javascripts/editor.js"></script>
+        <script src="./javascripts/three.js"></script>
+        <script src="./javascripts/control/TrackballControls.js"></script>
+        <script src="./javascripts/loaders/STLLoader.js"></script>
+        <script src="./javascripts/super-loader.min.js"></script>
+        <script src="./javascripts/editor.js"></script>
         <script>
 
             var t = superLoader('/model/aircraft.stl');   
@@ -16,9 +17,11 @@
             t.on('parse.load', ( event, mesh ) => {
                 mesh.geometry.center();
                 mesh.material = material;
-                mesh.rotation.x = Math.PI / 180 * -90;
+                mesh.rotation.x = Math.PI / 180 * -75;
+                mesh.rotation.z = Math.PI / 180 * -45;
                 mesh.scale.set( 0.009, 0.009, 0.009 );
                 scene.add( mesh );
+                render();
             }); 
 
             t.on('parse.error', ( event, message ) => {
