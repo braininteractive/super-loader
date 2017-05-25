@@ -8,7 +8,7 @@ animate();
 
 function init() {
     scene = new THREE.Scene();
-    scene.fog = new THREE.Fog( 0x72645b, 2, 15 );
+    scene.fog = new THREE.Fog( 0x8cb3ef, 2, 15 );
     camera = new THREE.PerspectiveCamera( 35, screenWidth / screenHeight, 1, 15 );
     camera.position.z = 3;
 
