@@ -2,31 +2,50 @@
 <html>
     <head>
         <title>Example: load - stl</title>
-        <link href="/stylesheet/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="./stylesheet/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <style type="text/css">
+            #progress {
+                position: fixed; left:0; top:0; bottom:0; right:0; margin: auto;
+            }
+        </style>
     </head>
     <body>
-        <script src="/javascripts/three.js"></script>
-        <script src="/javascripts/loaders/STLLoader.js"></script>
-        <script src="/javascripts/super-loader.min.js"></script>
-        <script src="/javascripts/editor.js"></script>
+        <progress max="100" value="0" id="progress"></progress>
+        <script src="./javascripts/three.js"></script>
+        <script src="./javascripts/control/TrackballControls.js"></script>
+        <script src="./javascripts/loaders/STLLoader.js"></script>
+        <script src="./javascripts/super-loader.min.js"></script>
+        <script src="./javascripts/editor.js"></script>
         <script>
 
-            var t = superLoader('/model/aircraft.stl');   
+            var t = superLoader('./model/aircraft.stl');  
+            var pro = document.getElementById('progress'); 
 
-            t.on('parse.load', ( event, mesh ) => {
+            t.on('parse.load', function ( event, object ){
+                var mesh = object.mesh;
                 mesh.geometry.center();
                 mesh.material = material;
-                mesh.rotation.x = Math.PI / 180 * -90;
+                mesh.rotation.x = Math.PI / 180 * -75;
+                mesh.rotation.z = Math.PI / 180 * -45;
                 mesh.scale.set( 0.009, 0.009, 0.009 );
                 scene.add( mesh );
+                render();
             }); 
 
-            t.on('parse.error', ( event, message ) => {
+            t.on('parse.error', function ( event, message ) {
                 console.log( message );
             });
 
-            t.on('compatible.error', ( event, message ) => {
+            t.on('compatible.error', function ( event, message ) {
                 console.log( message );
+            });
+
+            t.on('upload.progress', function ( event, progress ) {
+                pro.value = (progress.loaded / progress.total) * 100
+            }); 
+
+            t.on('upload.finish', function ( event ) {
+                pro.style.display = 'none';
             });
         </script>
     </body>
