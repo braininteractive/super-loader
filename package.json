@@ -9,8 +9,9 @@
     "test": "npm run test:load_stl_reduction; npm run clear",
     "test:load_stl_reduction": "node examples/load_stl_reduction.js",
     "clear": "rm -rf examples/records; ",
-    "build": "webpack --progress --hide-modules --config build/webpack.build.min.js && webpack --progress --hide-modules --config  build/webpack.build.js"
-  },
+    "build": "webpack --progress --hide-modules --config build/webpack.build.min.js && webpack --progress --hide-modules --config  build/webpack.build.js; npm run cp",
+    "cp": "cp -R dist/super-loader.min.js example/javascripts/"
+  },  
   "repository": "https://github.com/royJang/super-loader.git",
   "author": "royjang <zzl11081@gmai.com>",
   "license": "MIT License",
@@ -27,6 +28,8 @@
     "cookie-parser": "^1.4.3",
     "express": "^4.15.2",
     "fs-extra": "^3.0.1",
+    "gulp": "^3.9.1",
+    "gulp-gh-pages": "^0.5.4",
     "html-webpack-plugin": "^2.28.0",
     "webpack": "^2.5.1",
     "webpack-dev-middleware": "^1.10.2",

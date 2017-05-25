@@ -5,7 +5,6 @@ import { getExtension, isDiskFile } from './util';
 import loader from './loader';
 import ps from './util/pubsub';
     
-
 function superLoader ( file /* or files */, configure = {} ) {
 
     if( !window.FileReader || !window.ArrayBuffer ) {
@@ -21,7 +20,7 @@ function superLoader ( file /* or files */, configure = {} ) {
         while( fl-- ){
             superLoader(file.item( fl ), configure);
         }
-        return ps;
+        return ps;  
     }           
 
     var extension;
