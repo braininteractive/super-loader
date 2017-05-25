@@ -59,3 +59,4 @@ function addShadowedLight( x, y, z, color, intensity ) {
     directionalLight.shadow.mapSize.height = 1024;
     directionalLight.shadow.bias = -0.005;
 }
+

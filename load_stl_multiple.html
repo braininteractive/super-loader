@@ -2,9 +2,15 @@
 <html>
     <head>
         <title>Example: load - stl - multiple</title>
-        <link href="/stylesheet/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="./stylesheet/bootstrap.min.css" rel="stylesheet" type="text/css" />
+         <style type="text/css">
+            #progress {
+                position: fixed; left:0; top:0; bottom:0; right:0; margin: auto;
+            }
+        </style>
     </head>
     <body>
+        <progress max="100" value="0" id="progress"></progress>
         <script src="./javascripts/three.js"></script>
         <script src="./javascripts/control/TrackballControls.js"></script>
         <script src="./javascripts/loaders/STLLoader.js"></script>
@@ -12,26 +18,36 @@
         <script src="./javascripts/editor.js"></script>
         <script>
 
-            var t = superLoader([
-                '/model/aircraft.stl',
-                '/model/car.stl'
-            ]);   
+            var pro = document.getElementById('progress'); 
+            var origin = [
+                './model/aircraft.stl',
+                './model/car.stl'
+            ];
+            var len = origin.length;
+            var loaded = 0;
+            var t = superLoader( origin );      
 
-            t.on('parse.load', ( event, mesh ) => {
+            t.on('parse.load', ( event, object ) => {
+                var mesh = object.mesh;
                 mesh.geometry.center();
                 mesh.material = material;
-                if( mesh.name === 'aircraft' ){
+                if( object.name === './model/aircraft.stl' ){
                     mesh.rotation.x = Math.PI / 180 * -75;
                     mesh.rotation.z = Math.PI / 180 * -45;
                     mesh.scale.set( 0.009, 0.009, 0.009 );
-                } else if( mesh.name === 'car' ){
-                    mesh.rotation.x = Math.PI / 180 * -75;
-                    mesh.rotation.z = Math.PI / 180 * -45;
-                    mesh.scale.set( 0.003, 0.003, 0.003 );
+                    mesh.position.setY( 0.6 );
+                } else if( object.name === './model/car.stl' ){
+                    mesh.rotation.x = Math.PI / 180 * 15;
+                    mesh.rotation.y = Math.PI / 180 * 30;
+                    mesh.scale.set( 0.03, 0.03, 0.03 );
                 }
                 scene.add( mesh );
                 render();
             });         
+
+            t.on('upload.progress', function ( event, progress ) {
+                pro.value = (progress.loaded / progress.total) * 100
+            }); 
 
             t.on('parse.error', ( event, message ) => {
                 console.log( message );
@@ -40,6 +56,13 @@
             t.on('compatible.error', ( event, message ) => {
                 console.log( message );
             });
+
+            t.on('upload.finish', function ( event ) {
+                loaded += 1;
+                if( loaded === len ){
+                     pro.style.display = 'none';
+                }
+            });
         </script>
-    </body>
+    </body> 
 </html> 
