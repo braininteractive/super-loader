@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example: upload - stl with obj</title>
+        <link href="./stylesheet/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <style type="text/css">
+            #fileUpload {
+                position: fixed; left:0; top:0;
+            }
+             #progress {
+                position: fixed; left:0; top:0; bottom:0; right:0; margin: auto;
+                display: none;
+            }
+        </style>
+    </head> 
+    <body>  
+        <input type="file" id="fileUpload" multiple />
+        <progress max="100" value="0" id="progress"></progress>
+        <script src="./javascripts/three.js"></script>
+        <script src="./javascripts/control/TrackballControls.js"></script>
+        <script src="./javascripts/loaders/STLLoader.js"></script>
+        <script src="./javascripts/loaders/OBJLoader.js"></script>
+        <script src="./javascripts/super-loader.min.js"></script>
+        <script src="./javascripts/editor.js"></script>
+        <script>
+            var pro = document.getElementById('progress'); 
+            document.getElementById('fileUpload').addEventListener('change', upload);
+            function upload ( event ){
+                var t = superLoader( event.target.files );      
+                t.on('parse.load', ( event, object ) => {
+                    var mesh = object.mesh;
+                    mesh.geometry.center();
+                    mesh.material = material;
+                    mesh.scale.set( 0.019, 0.019, 0.019 );
+                    scene.add( mesh );
+                    render();
+                });         
+                
+                t.on('parse.error', ( event, message ) => {
+                    console.log( message );
+                });
+                 t.on('upload.progress', function ( event, progress ) {
+                    pro.style.display = 'block';
+                    pro.value = (progress.loaded / progress.total) * 100
+                }); 
+                t.on('compatible.error', ( event, message ) => {
+                    console.log( message ); 
+                });
+                t.on('upload.finish', function ( event ) {
+                    pro.style.display = 'none';
+                });
+            }
+        </script>
+    </body> 
+</html> 

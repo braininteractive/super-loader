@@ -1,36 +1,35 @@
 <!doctype html>
 <html>
     <head>
-        <title>Example: load - stl</title>
+        <title>Example: load - obj</title>
         <link href="./stylesheet/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <style type="text/css">
             #progress {
                 position: fixed; left:0; top:0; bottom:0; right:0; margin: auto;
             }
         </style>
-    </head>
+    </head> 
     <body>
         <progress max="100" value="0" id="progress"></progress>
         <script src="./javascripts/three.js"></script>
         <script src="./javascripts/control/TrackballControls.js"></script>
-        <script src="./javascripts/loaders/STLLoader.js"></script>
+        <script src="./javascripts/loaders/OBJLoader.js"></script>
         <script src="./javascripts/super-loader.min.js"></script>
         <script src="./javascripts/editor.js"></script>
-        <script>
-        
-            var t = superLoader('./model/aircraft.stl');  
+        <script>    
+            
+            var t = superLoader('./model/WaltHead.obj');  
             var pro = document.getElementById('progress'); 
 
             t.on('parse.load', function ( event, object ){
                 var mesh = object.mesh;
                 mesh.geometry.center();
                 mesh.material = material;
-                mesh.rotation.x = Math.PI / 180 * -75;
-                mesh.rotation.z = Math.PI / 180 * -45;
+                mesh.rotation.y = Math.PI / 180 * -45;
                 mesh.scale.set( 0.009, 0.009, 0.009 );
                 scene.add( mesh );
                 render();
-            }); 
+            });     
 
             t.on('parse.error', function ( event, message ) {
                 console.log( message );
