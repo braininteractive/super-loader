@@ -18,7 +18,7 @@ export default class Disk {
                     "loaded": loaded,
                     "total": total,
                     "timeStamp": timeStamp,
-                    "name": file.name
+                    "name": file.name   
                 }); 
             });     
             this.reader.addEventListener( 'error', ({ message, stack }) => {
@@ -28,9 +28,6 @@ export default class Disk {
                     "stack": stack
                 });
             });     
-            this.reader.addEventListener( 'abort',  e => {
-                console.log( 'abort' ); 
-            });
             ps.on('upload.abort', () => {
                 this.reader.abort();
             });         

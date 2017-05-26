@@ -40,19 +40,16 @@ function superLoader ( file /* or files */, configure = {} ) {
     }       
 
     // getExtension(decodeURIComponent( file ));
-    if( configure.type ) extension = configure.type; //use user's configure first
+    if( configure.type ) extension = configure.type.toUpperCase(); //use user's configure first
 
-    if( !extension ) return ps.emit('compatible.error', '[Error] Can not determine the format of the file');
+    if( !extension ) return ps.emit('compatible.error', 'Can not determine the format of the file');
     
     // webWorker support
     if( window.Worker && ( configure.worker || typeof configure.worker === undefined )){
         workerEnable = true;
-    }   
+    }       
 
-    // default: super-loader parse the model's Color
-    var noColor = configure.noColor || true;       
-
-    return loader( file, extension, isDisk, workerEnable, !!noColor );
+    return loader( file, extension, isDisk, workerEnable );
 };
 
 module.exports = superLoader;

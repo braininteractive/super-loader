@@ -4,7 +4,7 @@ import deps from '../util/deps';
 import { appendBuffer, normalizeGeometry } from '../util';
 import ps from '../util/pubsub';
 
-module.exports = ( file, extension, isDisk, workerEnable, noColor ) => {
+module.exports = ( file, extension, isDisk, workerEnable ) => {
     // The remote file is first read to the local, and then loaded according to the local file
     const FileReader = isDisk ? Disk : Fetch;
     const covert2Mesh = require(`../plugins/${extension}`); 
@@ -16,11 +16,9 @@ module.exports = ( file, extension, isDisk, workerEnable, noColor ) => {
             ps.emit( 'upload.finish', {
                 "name": name,   
                 "buffer": content   
-            });     
-            try {       
-                var geometry = loader.parse( content, {    
-                    "noColor": noColor  
-                });     
+            });         
+            try {               
+                var geometry = loader.parse( content );     
                 ps.emit( 'parse.before', {
                     "name": name,
                     "bufferGeometry": geometry
@@ -36,7 +34,7 @@ module.exports = ( file, extension, isDisk, workerEnable, noColor ) => {
                     "message": message
                 });
             }   
-        });     
+        });         
     });             
     return ps;
 };              
