@@ -34,8 +34,8 @@ var load = window.superLoader('assets/models/example.stl');
 load.on ...
 ```
 
-**Note:** If you need to load the stl model, must be require the `THREE.STLLoader`
-**Note:** We have modified some of the source code for *-loader, You can download it in `example / javascripts / loaders`
+**Note:** If you need to load the stl model, must be require the `THREE.STLLoader`    
+**Note:** We have modified some of the source code for *-loader, You can download it in `example / javascripts / loaders`    
 
 ### Constructor
 ```
