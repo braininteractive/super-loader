@@ -1181,7 +1181,7 @@ var _pubsub2 = _interopRequireDefault(_pubsub);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-module.exports = function (file, extension, isDisk, workerEnable, noColor) {
+module.exports = function (file, extension, isDisk, workerEnable) {
     var FileReader = isDisk ? _diskLoader2.default : _fetchLoader2.default;
     var covert2Mesh = __webpack_require__(55)("./" + extension);
     var name = isDisk ? file.name : file;
@@ -1194,9 +1194,7 @@ module.exports = function (file, extension, isDisk, workerEnable, noColor) {
                 "buffer": content
             });
             try {
-                var geometry = loader.parse(content, {
-                    "noColor": noColor
-                });
+                var geometry = loader.parse(content);
                 _pubsub2.default.emit('parse.before', {
                     "name": name,
                     "bufferGeometry": geometry
@@ -1333,17 +1331,15 @@ function superLoader(file) {
         extension = (0, _util.getExtension)(file);
     }
 
-    if (configure.type) extension = configure.type;
+    if (configure.type) extension = configure.type.toUpperCase();
 
-    if (!extension) return _pubsub2.default.emit('compatible.error', '[Error] Can not determine the format of the file');
+    if (!extension) return _pubsub2.default.emit('compatible.error', 'Can not determine the format of the file');
 
     if (window.Worker && (configure.worker || (0, _typeof3.default)(configure.worker) === undefined)) {
         workerEnable = true;
     }
 
-    var noColor = configure.noColor || true;
-
-    return (0, _loader2.default)(file, extension, isDisk, workerEnable, !!noColor);
+    return (0, _loader2.default)(file, extension, isDisk, workerEnable);
 };
 
 module.exports = superLoader;
@@ -1415,9 +1411,6 @@ var Disk = function () {
                     "message": message,
                     "stack": stack
                 });
-            });
-            _this.reader.addEventListener('abort', function (e) {
-                console.log('abort');
             });
             _pubsub2.default.on('upload.abort', function () {
                 _this.reader.abort();
