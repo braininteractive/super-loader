@@ -69,10 +69,6 @@ loader([
 ], /* configure */);	
 ```
 
-**Example:**         
-[Load-STL](https://royjang.github.io/super-loader/load_stl.html)     
-[Load-STL-Multiple](https://royjang.github.io/super-loader/load_stl_multiple.html)    
-
 ### Configure
 
 - `type`    
@@ -136,6 +132,14 @@ abort the file upload
 ```
 loader.emit('upload.abort');
 ```
+
+### Example        
+[Load-STL](https://royjang.github.io/super-loader/load_stl.html)     
+[Load-STL-Multiple](https://royjang.github.io/super-loader/load_stl_multiple.html)        
+[Load-OBJ](https://royjang.github.io/super-loader/load_obj.html)      
+[Load-OBJ-With-STL](https://royjang.github.io/super-loader/load_obj_w_stl.html)    
+[Upload-OBJ-With-STL](https://royjang.github.io/super-loader/upload_obj_w_stl.html)
+
 
 [npm-badge]: https://img.shields.io/npm/v/super-loader.svg
 [npm-badge-url]: https://www.npmjs.com/package/super-loader
