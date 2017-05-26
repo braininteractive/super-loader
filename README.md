@@ -91,9 +91,6 @@ Use a separate thread resolution model
 ```
 **Note:** If the Browser support WebWorker, defaut is true
 
-- 
-
-
 ### Hooks - Listener
 
 - `parse.before`
