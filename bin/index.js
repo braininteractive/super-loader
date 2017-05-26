@@ -1,5 +1,5 @@
-/*
-    super-loader v1.0
+/**
+    @author royJang https://github.com/royJang
 */
 import { getExtension, isDiskFile } from './util';
 import loader from './loader';
