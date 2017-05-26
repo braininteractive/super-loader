@@ -127,7 +127,7 @@ loader.on('parse.before', ( event, { name, loaded, total, timeStamp } ) => {});
 - `compatible.error`    
 If the browser not support `WebGL`,  `FileReader` or `ArrayBuffer`    
 ```
-function ( event, message )
+loader.on('parse.before', ( event, message ) => {});
 ```
 
 ### Hooks - Emit
