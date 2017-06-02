@@ -10,9 +10,13 @@ function superLoader ( file /* or files */, configure = {} ) {
     if( !window.FileReader || !window.ArrayBuffer ) {
         return ps.emit('compatible.error', 'Not support FileReader or ArrayBuffer');
     }
-    
+
     if(Array.isArray( file )){
-        file.forEach( _file => superLoader( _file, configure ) );
+        file.forEach( _file => {
+            superLoader( _file.path, Object.assign(configure, {
+                alias: _file.alias
+            }));
+        });
         return ps;  
     }
     if( file instanceof FileList ){ 
@@ -24,6 +28,7 @@ function superLoader ( file /* or files */, configure = {} ) {
     }           
 
     var extension;
+    var alias;
     var isDisk = isDiskFile( file );
 
     // default configure
@@ -39,6 +44,8 @@ function superLoader ( file /* or files */, configure = {} ) {
         extension = getExtension( file );
     }       
 
+    if( configure.alias ) alias = configure.alias;
+
     // getExtension(decodeURIComponent( file ));
     if( configure.type ) extension = configure.type.toUpperCase(); //use user's configure first
 
@@ -49,7 +56,7 @@ function superLoader ( file /* or files */, configure = {} ) {
         workerEnable = true;
     }       
 
-    return loader( file, extension, isDisk, workerEnable );
+    return loader( file, alias, extension, isDisk, workerEnable );
 };
 
 module.exports = superLoader;

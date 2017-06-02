@@ -64,8 +64,14 @@ loader( 'https://royjang.github.io/super-loader/model/aircraft.stl', /* configur
 or    
 ```
 loader([
-	'https://royjang.github.io/super-loader/model/aircraft.stl',
-	'https://royjang.github.io/super-loader/model/car.stl'
+	{
+		path: 'https://royjang.github.io/super-loader/model/aircraft.stl',
+		alias: 'aircraft'	// not required, default is path
+	},	
+	{
+		path: 'https://royjang.github.io/super-loader/model/car.stl',
+		alias: 'car'
+	}
 ], /* configure */);	
 ```
 
