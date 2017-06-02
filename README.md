@@ -103,27 +103,27 @@ loader.on('parse.before', ( event, { name, bufferGeometry } ) => {});
 
 - `parse.load`
 ```
-loader.on('parse.before', ( event, { name, mesh } ) => {});
+loader.on('parse.load', ( event, { name, mesh } ) => {});
 ```
 
 - `parse.error`
 ```
-loader.on('parse.before', ( event, { name, stack, message } ) => {});
+loader.on('parse.error', ( event, { name, stack, message } ) => {});
 ```
 
 - `upload.finish`
 ```
-loader.on('parse.before', ( event, { name, buffer } ) => {});
+loader.on('parse.finish', ( event, { name, buffer } ) => {});
 ```
 
 - `upload.error`
 ```
-loader.on('parse.before', ( event, { name, stack, message } ) => {});
+loader.on('parse.error', ( event, { name, stack, message } ) => {});
 ```
 
 - `upload.progress`
 ```
-loader.on('parse.before', ( event, { name, loaded, total, timeStamp } ) => {});
+loader.on('parse.progress', ( event, { name, loaded, total, timeStamp } ) => {});
 ```
 
 - `compatible.error`    
@@ -153,7 +153,5 @@ loader.emit('upload.abort');
 [license-badge-url]: ./LICENSE
 [dependencies-badge]: https://img.shields.io/david/royJang/super-loader.svg
 [dependencies-badge-url]: https://david-dm.org/royJang/super-loader
-[devDependencies-badge]: 
-https://img.shields.io/david/dev/royJang/super-loader.svg
-[devDependencies-badge-url]: 
-https://david-dm.org/royJang/super-loader#info=devDependencies
+[devDependencies-badge]: https://img.shields.io/david/dev/royJang/super-loader.svg
+[devDependencies-badge-url]: https://david-dm.org/royJang/super-loader#info=devDependencies
