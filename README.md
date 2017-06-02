@@ -113,25 +113,25 @@ loader.on('parse.error', ( event, { name, stack, message } ) => {});
 
 - `upload.finish`
 ```
-loader.on('parse.finish', ( event, { name, buffer } ) => {});
+loader.on('upload.finish', ( event, { name, buffer } ) => {});
 ```
 
 - `upload.error`
 ```
-loader.on('parse.error', ( event, { name, stack, message } ) => {});
+loader.on('upload.error', ( event, { name, stack, message } ) => {});
 ```
 
 - `upload.progress`
 ```
-loader.on('parse.progress', ( event, { name, loaded, total, timeStamp } ) => {});
+loader.on('upload.progress', ( event, { name, loaded, total, timeStamp } ) => {});
 ```
 
 - `compatible.error`    
 If the browser not support `WebGL`,  `FileReader` or `ArrayBuffer`    
 ```
-loader.on('parse.before', ( event, message ) => {});
+loader.on('compatible.error', ( event, message ) => {});
 ```
-
+	
 ### Hooks - Emit
 - `upload.abort`    
 abort the file upload    
