@@ -1,6 +1,6 @@
 {
   "name": "super-loader",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "The model loader for the three.js",
   "main": "./dist/super-loader.min.js",
   "scripts": {
