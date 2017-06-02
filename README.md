@@ -86,6 +86,12 @@ Use a separate thread resolution model
 	worker: true
 }
 ```
+
+### Will Support
+
+- `timeout`
+
+
 **Note:** If the Browser support WebWorker, defaut is true
 
 ### Hooks - Listener
