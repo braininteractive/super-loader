@@ -1338,7 +1338,7 @@ function superLoader(file) {
 
     if (Array.isArray(file)) {
         file.forEach(function (_file) {
-            superLoader(_file.path, (0, _assign2.default)(configure, {
+            superLoader(_file.url, (0, _assign2.default)(configure, {
                 alias: _file.alias
             }));
         });

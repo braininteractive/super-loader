@@ -65,11 +65,11 @@ or
 ```
 loader([
 	{
-		path: 'https://royjang.github.io/super-loader/model/aircraft.stl',
+		url: 'https://royjang.github.io/super-loader/model/aircraft.stl',
 		alias: 'aircraft'	// not required, default is path
 	},	
 	{
-		path: 'https://royjang.github.io/super-loader/model/car.stl',
+		url: 'https://royjang.github.io/super-loader/model/car.stl',
 		alias: 'car'
 	}
 ], /* configure */);	

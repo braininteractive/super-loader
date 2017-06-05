@@ -13,7 +13,7 @@ function superLoader ( file /* or files */, configure = {} ) {
 
     if(Array.isArray( file )){
         file.forEach( _file => {
-            superLoader( _file.path, Object.assign(configure, {
+            superLoader( _file.url, Object.assign(configure, {
                 alias: _file.alias
             }));
         });
