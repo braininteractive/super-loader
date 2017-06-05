@@ -15,8 +15,9 @@
         <script src="./javascripts/control/TrackballControls.js"></script>
         <script src="./javascripts/loaders/STLLoader.js"></script>
         <script src="./javascripts/super-loader.min.js"></script>
+        <!--<script src="http://localhost:4000/super-loader.js"></script>-->
         <script src="./javascripts/editor.js"></script>
-        <script>
+        <script>    
         
             var t = superLoader('./model/aircraft.stl');  
             var pro = document.getElementById('progress'); 
@@ -30,7 +31,7 @@
                 mesh.scale.set( 0.009, 0.009, 0.009 );
                 scene.add( mesh );
                 render();
-            }); 
+            });
 
             t.on('parse.error', function ( event, message ) {
                 console.log( message );

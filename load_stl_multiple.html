@@ -14,15 +14,22 @@
         <script src="./javascripts/three.js"></script>
         <script src="./javascripts/control/TrackballControls.js"></script>
         <script src="./javascripts/loaders/STLLoader.js"></script>
+        <!--<script src="http://localhost:4000/super-loader.js"></script>-->
         <script src="./javascripts/super-loader.min.js"></script>
         <script src="./javascripts/editor.js"></script>
         <script>
 
             var pro = document.getElementById('progress'); 
             var origin = [
-                './model/aircraft.stl',
-                './model/car.stl'
-            ];
+                {
+                    url: './model/aircraft.stl',
+                    alias: 'aircraft'
+                },
+                {
+                    url: './model/car.stl',
+                    alias: 'car'    
+                }
+            ];      
             var len = origin.length;
             var loaded = 0;
             var t = superLoader( origin );      
@@ -31,18 +38,18 @@
                 var mesh = object.mesh;
                 mesh.geometry.center();
                 mesh.material = material;
-                if( object.name === './model/aircraft.stl' ){
+                if ( mesh.name === 'aircraft' ){
                     mesh.rotation.x = Math.PI / 180 * -75;
                     mesh.rotation.z = Math.PI / 180 * -45;
                     mesh.scale.set( 0.009, 0.009, 0.009 );
                     mesh.position.setY( 0.6 );
-                } else if( object.name === './model/car.stl' ){
+                } else if( mesh.name === 'car' ){
                     mesh.rotation.x = Math.PI / 180 * 15;
                     mesh.rotation.y = Math.PI / 180 * 30;
                     mesh.scale.set( 0.03, 0.03, 0.03 );
                 }
-                scene.add( mesh );
-                render();
+                scene.add( mesh );  
+                render();   
             });         
 
             t.on('upload.progress', function ( event, progress ) {
