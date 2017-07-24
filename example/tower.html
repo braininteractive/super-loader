@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Tower</title>
+        <link href="./stylesheet/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <script src="./javascripts/three.js"></script>
+        <script src="./javascripts/control/TrackballControls.js"></script>
+        <script src="./javascripts/editor.js"></script>
+        <script>
+
+            scene.fog = null;
+            camera.far = 1000;
+            camera.position.y = 50;
+            camera.position.z = 200;
+            camera.up.y = 1;
+            camera.updateProjectionMatrix ();
+
+            var box = new THREE.BoxGeometry( 5, 1, 5 );
+            var foundationMaterial = new THREE.MeshPhongMaterial({ color: 0x666666 });
+            var foundationPrefab = new THREE.Mesh( box, foundationMaterial );
+            var roadMaterial = new THREE.MeshPhongMaterial({ color: 0xff9900 });
+            var roadPrefab = new THREE.Mesh( box, roadMaterial ); 
+            var Time = new THREE.Clock();
+
+            var group = new THREE.Group();
+            var roadGroup = new THREE.Group();
+            var maps = [
+                "5-1", "5-2", "5-3", "5-4", "6-4", "7-4", "8-4",
+                "8-5", "8-6", "8-7",
+                "8-8", "8-9",
+                "8-10", "9-10", "10-10", "11-10", "12-10", "13-10", 
+                "14-10", "14-11","14-12","14-13", "14-14", "14-15", "14-16", "14-17", "14-18"
+            ];
+
+            // 20 * 20 foundation
+            for( var i = 0; i < 20; i++ ){
+                for( var j = 0; j < 20; j++ ){
+                    if( maps.indexOf( i + "-" + j ) < 0 ) {
+                        var t = foundationPrefab.clone();
+                        t.position.set( i * 5, 0, j * 5 );
+                        group.add( t );
+                    } else {
+                        var r = roadPrefab.clone();
+                        r.position.set( i * 5, 0, j * 5 );
+                        roadGroup.add( r );
+                    }
+                }  
+            }
+
+            scene.add( group );
+            scene.add( roadGroup );
+
+            //Vector3[]
+            var roadPaths = [];
+
+            //get all road position
+            roadGroup.children.forEach(function ( road ){
+                roadPaths.push( road.position );
+            });
+
+            var ballGeometry = new THREE.SphereGeometry( 2, 100, 100 );
+            var ballMaterial = new THREE.MeshPhongMaterial({ color: 0xffcc99 });
+            var ball = new THREE.Mesh( ballGeometry, ballMaterial );
+            scene.add( ball );
+
+            //init ball position
+            ball.position.set( roadPaths[0].x, 2.5, roadPaths[0].z );
+
+            var stepIndex = 1;
+            var speed = 10;
+            var timer = null;
+
+            setTimeout(Update, 1000);
+            
+            function getRoadPosition ( index ){
+                return new THREE.Vector3( roadPaths[ index ].x, 2.5, roadPaths[ index ].z );
+            }
+
+            function Update (){
+                timer = requestAnimationFrame( Update );
+                if( stepIndex > roadPaths.length -1 ) return cancelAnimationFrame( timer );
+                var pos = getRoadPosition( stepIndex );
+                ball.translateOnAxis(pos.sub(ball.position), Time.getDelta() * speed);
+                if( ball.position.distanceTo( getRoadPosition( stepIndex ) ) <= 2.5 ){
+                    stepIndex++;
+                } 
+            }
+
+        </script>
+    </body>
+</html>

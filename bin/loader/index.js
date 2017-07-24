@@ -1,5 +1,6 @@
 import Fetch from './fetch-loader';
 import Disk from './disk-loader';
+import Node from './node-loader';
 import deps from '../util/deps';
 import { appendBuffer, normalizeGeometry } from '../util';
 import ps from '../util/pubsub';

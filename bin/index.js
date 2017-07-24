@@ -41,9 +41,9 @@ function superLoader ( file /* or files */, configure = {} ) {
     }
     else {
         file = decodeURIComponent( file );
-        extension = getExtension( file );
-    }       
-
+        extension = configure.type || getExtension( file );
+    }           
+    
     if( configure.alias ) alias = configure.alias;
 
     // getExtension(decodeURIComponent( file ));

@@ -1,0 +1,9 @@
+{
+  "name": "superloader-plugin-stl",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  }
+}
