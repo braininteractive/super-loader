@@ -1363,16 +1363,15 @@ function superLoader(file) {
     var workerEnable;
     var maxThread = 4;
 
+    if (configure.type) extension = configure.type.toUpperCase();
     if (isDisk) {
         extension = file.type || (0, _util.getExtension)(file.name);
     } else {
         file = decodeURIComponent(file);
-        extension = configure.type || (0, _util.getExtension)(file);
+        extension = extension || (0, _util.getExtension)(file);
     }
 
     if (configure.alias) alias = configure.alias;
-
-    if (configure.type) extension = configure.type.toUpperCase();
 
     if (!extension) return _pubsub2.default.emit('compatible.error', 'Can not determine the format of the file');
 

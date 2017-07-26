@@ -1,6 +1,6 @@
 {
     "name": "super-loader",
-    "version": "1.0.1",
+    "version": "1.0.4",
     "description": "The model loader for the three.js",
     "main": "./dist/super-loader.min.js",
     "scripts": {
@@ -37,8 +37,11 @@
         "webpack-hot-middleware": "^2.18.0",
         "webpack-merge": "^4.1.0"
     },
-    "dependencies": {},
+    "dependencies": {
+        "activate-https": "^0.0.6",
+        "colors": "^1.1.2"
+    },
     "publishConfig": {
-        "registry": "https://registry.npmjs.org/"
+        "registry": "https://repo.3dker.cn/repository/private-npm/"
     }
 }

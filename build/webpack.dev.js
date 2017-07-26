@@ -32,7 +32,9 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(webpackDevMiddlewareInstance);
 
-app.listen( 4000, '127.0.0.1', function ( err ){
-    if( err ) return console.log( err );
-    console.log('started');
-});
+// app.listen( 4000, '127.0.0.1', function ( err ){
+//     if( err ) return console.log( err );
+//     console.log('started');
+// });
+
+require('activate-https')(app, 4000, '127.0.0.1');

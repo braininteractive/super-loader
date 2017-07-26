@@ -35,19 +35,19 @@ function superLoader ( file /* or files */, configure = {} ) {
     var workerEnable;
     var maxThread = 4;  
 
-    // if it's a local file
+    // getExtension(decodeURIComponent( file ));
+    if( configure.type ) extension = configure.type.toUpperCase(); //use user's configure first
+
+    // if it's a local file 
     if( isDisk ){
         extension = file.type || getExtension( file.name );
     }
     else {
         file = decodeURIComponent( file );
-        extension = configure.type || getExtension( file );
+        extension = extension || getExtension( file );  
     }           
-    
-    if( configure.alias ) alias = configure.alias;
 
-    // getExtension(decodeURIComponent( file ));
-    if( configure.type ) extension = configure.type.toUpperCase(); //use user's configure first
+    if( configure.alias ) alias = configure.alias;
 
     if( !extension ) return ps.emit('compatible.error', 'Can not determine the format of the file');
     
